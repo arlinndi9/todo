@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<style>
+    #todo{
+        font-family: Arial, Helvetica, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+
+    }
+    #todo td, #todo th {
+        border: 1px solid #ddd;
+        padding: 8px;
+
+    }
+    #todo tr {
+        background-color: #f2f2f2;}
+
+    #forma{
+        color: blue;
+        text-align: center;
+        padding-bottom: 3%;
+        font-size: 25px;
+
+
+    }
+    button{
+         background-color:lightslategray;
+        color: white;
+      border-radius: 5px;
+
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+    }
+    #edit{
+        background-color: green;
+        color: white;
+      border-radius: 5px;
+      padding: 10px 20px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+    }
+    #delete{
+      background-color: red;
+      color: white;
+      border-radius: 5px;
+      padding: 10px 20px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+    }
+    #home{
+      background-color: red;
+      color: white;
+      border-radius: 5px;
+      padding: 10px ;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+    }
+    #mark{
+         background-color: lightblue;
+        color: white;
+      border-radius: 5px;
+      padding: 10px 20px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+    }
+    #searchtodo{
+        display: inline-block;
+    }
+    #bsearch{
+        background-color: lightblue;
+        color: black;
+      border-radius: 5px;
+      padding: 10px 20px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+
+    }
+
+
+
+</style>
+<head>
+    <meta charset="UTF-8">
+    <title>todo</title>
+</head>
+<body>
+<form>
+    <p id="searchtodo">Search Todo</p>
+    <input name="q" type="search">
+    <button type="submit" id="bsearch">search</button>
+    <a href="{% url 'home' %}" id="home">Home</a>
+
+</form>
+<div>
+ <form id="forma" action="{% url 'create' %}" method="POST">
+     {% csrf_token %}
+     {{ form }}
+     <button type="submit">Save</button>
+ </form>
+</div>
+
+<div>
+    {% if todos %}
+    <table id="todo">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Actions</th>
+                <th>Operation</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for todo in todos %}
+        <tr>
+            <td>{{ todo.title }}</td>
+            <td>{% if todo.completed %} Completed {% else %}Open{% endif %} </td>
+            <th>
+                {% if todo.completed == False %}
+                    <a href="{% url 'mark-as-completed' todo.id%}" id="mark">Mark</a>
+                {% endif %}
+                <a href="{% url 'update' todo.id%}" id="edit">Edit</a>
+                <a href="{% url 'delete' todo.id %} " id="delete">Delete</a>
+
+            </th>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+
+</div>
+</body>
+</html>
